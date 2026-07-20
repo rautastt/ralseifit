@@ -80,10 +80,11 @@
     </header>
 
     <nav class="pages">
-      <a href="/">home</a>
+      <a class="active" href="/">home</a>
       <a href="/music.html">music</a>
       <a href="/projects.html">projects</a>
       <a href="/game.html">quest</a>
+      <a href="/socials.html">my socials</a>
     </nav>
 
     <div class="frame">
@@ -126,9 +127,11 @@
   (function(){
     var cat=document.getElementById('cat');
     function wake(){
-      alert('you made the cat mad...');
-      alert('um...');
+      alert('The cat felt you trying to touch it, even in it's sleep.');
+      alert('You turn behind and try to run.');
+      alert('...but...');
       window.location.href='https://www.youtube.com/watch?v=dQw4w9WgXcQ';
+      alert('gotcha :3');
     }
     cat.addEventListener('click',wake);
     cat.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();wake();}});
