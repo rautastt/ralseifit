@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Found</title>
+<style>
+    body {
+        background: black;
+        color: white;
+        font-family: Arial, sans-serif;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        font-size: 32px;
+    }
+
+    #text {
+        text-align: center;
+    }
+</style>
+</head>
+
+<body>
+
+<div id="text">Not found</div>
+</body>
+</html>
