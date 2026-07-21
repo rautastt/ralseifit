@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>clover's quest · ralsei.fit</title>
+<title>...</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9C%A8%3C/text%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -19,7 +19,7 @@
     font-family:'Quicksand',sans-serif;color:var(--cream);
     background:
       linear-gradient(180deg, rgba(15,29,20,.55) 0%, rgba(15,29,20,.75) 100%),
-      url('https://i.pinimg.com/originals/2d/56/d9/2d56d94edf787d0339a354e2f3b5d207.png') center/cover no-repeat fixed;
+      url('') center/cover no-repeat fixed;
     min-height:100vh;display:flex;flex-direction:column;align-items:center;
     padding:24px 16px 64px;overflow-x:hidden;
   }
@@ -154,15 +154,15 @@
   <div class="stars" id="stars"></div>
   <div class="wrap">
     <header class="hero">
-      <h1>clover's quest<span class="dot">.</span>fit</h1>
-      <div class="sub">✦ gather the lost parts ✦</div>
+      <h1>quest<span class="dot">.</span>fit</h1>
+      <div class="sub">...</div>
     </header>
 
     <nav class="pages">
-      <a class="active" href="/">home</a>
-      <a href="/music.html">music</a>
-      <a href="/projects.html">projects</a>
-      <a href="/socials.html">my socials</a>
+      <a class="active" href="/">No.</a>
+      <a href="/game.html">No.</a>
+      <a href="/game.html">No.</a>
+      <a href="/game.html">No.</a>
     </nav>
 
     <div class="hud">
@@ -170,16 +170,16 @@
       <div class="parts" id="parts">
         <i>✿</i><i>♪</i><i>✦</i><i>☾</i><i>♥</i>
       </div>
-      <div class="msg" id="msg">find them all...</div>
+      <div class="msg" id="msg">Find them all...</div>
     </div>
 
     <div class="map" id="map">
-      <div class="deco" style="left:12%;top:18%">🌲</div>
-      <div class="deco" style="left:78%;top:24%">🍄</div>
-      <div class="deco" style="left:18%;top:74%">🌿</div>
-      <div class="deco" style="left:82%;top:80%">✦</div>
-      <div class="deco" style="left:48%;top:12%">☁</div>
-      <div class="deco" style="left:50%;top:86%">⛰</div>
+      <div class="deco" style="left:12%;top:18%">?</div>
+      <div class="deco" style="left:78%;top:24%">?</div>
+      <div class="deco" style="left:18%;top:74%">?</div>
+      <div class="deco" style="left:82%;top:80%">?</div>
+      <div class="deco" style="left:48%;top:12%">?</div>
+      <div class="deco" style="left:50%;top:86%">?</div>
 
       <div class="gate" id="gate" style="left:50%;top:50%">🔒</div>
 
@@ -197,12 +197,12 @@
       <button data-dir="right">▶</button>
     </div>
 
-    <div class="hint">use the buttons or your <b>arrow keys / WASD</b>. collect all 5 parts to open the gate, then step through to meet the cat.</div>
+    <div class="hint">...</b>...</div>
 
-    <footer>made with <span class="heart">♥</span> by clover · ralsei.fit</footer>
+    <footer>Used to be made with love.</footer>
   </div>
 
-  <div class="toast" id="toast">+1 part!</div>
+  <div class="toast" id="toast">One part.</div>
 
   <button class="music-btn" id="musicBtn" title="toggle theme">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
@@ -283,9 +283,9 @@
         if(collected>=TOTAL){
           gate.classList.add('open');
           gate.textContent='✿';
-          msgEl.textContent='the gate opened! go through it.';
+          msgEl.textContent='The gate has open.';
         } else {
-          msgEl.textContent=(TOTAL-collected)+' more to find...';
+          msgEl.textContent=(TOTAL-collected)+' left.';
         }
       }
     }
@@ -319,8 +319,8 @@
       if(gate.classList.contains('open')){
         var dx=50-px,dy=50-py;
         if(Math.sqrt(dx*dx+dy*dy)<12){window.location.href='/cat.html';}
-        else{showToast('walk up to the gate!');}
-      } else {showToast('find all 5 parts first...');}
+        else{showToast('Walk up to the gate.');}
+      } else {showToast('Find all 5 parts first.');}
     });
     render();
   })();
