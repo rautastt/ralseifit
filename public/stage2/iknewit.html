@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>...</title>
+<style>
+    body {
+        background: black;
+        color: white;
+        font-family: Arial, sans-serif;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        font-size: 32px;
+    }
+
+    #text {
+        text-align: center;
+    }
+</style>
+</head>
+
+<body>
+
+<div id="text">I knew it.</div>
+
+<script>
+    const messages = [
+        "I knew it.",
+        "You'd be back.",
+        "You always do come back.",
+        "What was the cat doing?",
+        "...if you can call that piece of shit a cat.",
+        "Her.",
+        "She, herself is waiting.",
+        "I need to know",
+        "Who are you?",
+        "What do you want from her?",
+        "and why do you want her?",
+        "...fine.",
+        "Go play it like that, you fuckbag.",
+        "Just know you can always turn back.",
+        "...i'm counting on you."
+    ];
+
+    let index = 0;
+    const text = document.getElementById("text");
+
+    const interval = setInterval(() => {
+        index++;
+
+        if (index < messages.length) {
+            text.textContent = messages[index];
+        } else {
+            clearInterval(interval);
+            window.location.href = "https://ralsei.fit/findme.txt";
+        }
+
+    }, 5000);
+</script>
+
+</body>
+</html>
