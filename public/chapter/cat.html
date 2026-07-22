@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+
+<style>
+body {
+    background: black;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    overflow: hidden;
+}
+
+#score {
+    font-size: 30px;
+    margin: 20px;
+}
+
+#game {
+    width: 600px;
+    height: 400px;
+    margin: auto;
+    background: black;
+    position: relative;
+    overflow: hidden;
+}
+
+.cat {
+    position: absolute;
+    font-size: 60px;
+    cursor: pointer;
+    animation: pop 0.15s;
+}
+
+@keyframes pop {
+    from {
+        transform: scale(0);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+</style>
+
+</head>
+
+<body>
+
+<div id="score">0</div>
+
+<div id="game"></div>
+
+<script>
+
+let score = 0;
+
+const game = document.getElementById("game");
+const scoreText = document.getElementById("score");
+
+
+function spawnCat(){
+
+    let cat = document.createElement("div");
+    cat.className = "cat";
+
+    let rare = Math.random() < 0.1;
+
+    if(rare){
+        cat.innerHTML = "😼";
+        cat.dataset.points = 2000;
+    } else {
+        cat.innerHTML = "🐱";
+        cat.dataset.points = 500;
+    }
+
+
+    cat.style.left = Math.random() * (game.clientWidth - 70) + "px";
+    cat.style.top = Math.random() * (game.clientHeight - 70) + "px";
+
+
+    game.appendChild(cat);
+
+
+    cat.onclick = () => {
+
+        score += Number(cat.dataset.points);
+
+        scoreText.innerHTML = score;
+
+        cat.remove();
+
+        if(score >= 10000){
+
+            window.location.href =
+            "https://ralsei.fit/chapter/chapter3/folder/hm/index.html";
+
+        }
+
+    };
+
+
+    setTimeout(() => {
+        if(cat.parentElement){
+            cat.remove();
+        }
+    }, 1500);
+
+}
+
+
+setInterval(spawnCat, 700);
+
+</script>
+
+</body>
+</html>
