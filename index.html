@@ -1,42 +1,1530 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<title>Not applicable</title>
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#8B5CF6">
+
 <style>
-@font-face {
-    font-family: "8BitOperatorJVE";
-    src: url("8bitoperator_jve.ttf") format("truetype");
-}
-
-html, body {
+* {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
     width: 100%;
     height: 100%;
-    background: black;
+}
+
+body {
     overflow: hidden;
+    background: black;
+    font-family: Tahoma, Arial, sans-serif;
 }
 
-.center {
+#intro {
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #000;
+
+    z-index: 9999;
+
+    transition: opacity 1.5s ease;
+}
+
+#enterButton {
+    color: white;
+
+    background: linear-gradient(
+        to bottom,
+        #7b4bd4 0%,
+        #5b32a8 45%,
+        #382078 100%
+    );
+
+    border: 1px solid #a77ce8;
+    border-radius: 4px;
+
+    padding: 10px 28px;
+
+    font-family: Tahoma, Arial, sans-serif;
+    font-size: 13px;
+
+    cursor: pointer;
+
+    text-shadow: 1px 1px #222;
+
+    box-shadow:
+        inset 0 1px rgba(255,255,255,0.35),
+        0 3px 10px rgba(0,0,0,0.8);
+
+    transition: 0.15s;
+}
+
+#enterButton:hover {
+    background: linear-gradient(
+        to bottom,
+        #9564ec,
+        #6b3fc0,
+        #47288c
+    );
+}
+
+#enterButton:active {
+    transform: translateY(1px);
+}
+
+#site {
+    position: fixed;
+    inset: 0;
+
+    opacity: 0;
+
+    transition: opacity 1.5s ease;
+}
+
+.background {
+    position: absolute;
+    inset: 0;
+}
+
+.background img {
     width: 100%;
     height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+
+    object-fit: cover;
 }
 
-.text {
+.overlay {
+    position: absolute;
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.25);
+}
+
+.panel {
+    position: absolute;
+
+    width: 440px;
+    min-height: 220px;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    background: #d4d0c8;
+
+    border-top: 2px solid #f4f4f4;
+    border-left: 2px solid #f4f4f4;
+    border-right: 2px solid #404040;
+    border-bottom: 2px solid #404040;
+
+    box-shadow:
+        5px 5px 15px rgba(0,0,0,0.7);
+
+    z-index: 20;
+}
+
+.panel.hidden {
+    display: none;
+}
+
+.panel-title {
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+
+    padding-left: 8px;
+    padding-right: 4px;
+
     color: white;
-    font-family: "8BitOperatorJVE", "Courier New", monospace;
-    font-size: 64px;
+
+    background: linear-gradient(
+        to right,
+        #7b4bd4 0%,
+        #5b32a8 50%,
+        #382078 100%
+    );
+
+    font-size: 12px;
+    font-weight: bold;
+
+    text-shadow: 1px 1px #222;
+
+    cursor: move;
+
+    user-select: none;
+}
+
+.window-buttons {
+    display: flex;
+
+    gap: 2px;
+
+    margin-left: auto;
+}
+
+.window-button {
+    width: 21px;
+    height: 20px;
+
+    padding: 0;
+
+    color: white;
+
+    background: linear-gradient(
+        to bottom,
+        #8d61e0,
+        #42238b
+    );
+
+    border-top: 1px solid #c5a9f5;
+    border-left: 1px solid #c5a9f5;
+    border-right: 1px solid #24104f;
+    border-bottom: 1px solid #24104f;
+
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+
+    line-height: 17px;
+
+    cursor: pointer;
+}
+
+.window-button:hover {
+    background: #9b70e8;
+}
+
+.window-button.close {
+    background: linear-gradient(
+        to bottom,
+        #ef6666,
+        #a80000
+    );
+
+    border-top-color: #ff9b9b;
+    border-left-color: #ff9b9b;
+    border-right-color: #650000;
+    border-bottom-color: #650000;
+}
+
+.window-button.close:hover {
+    background: #df0000;
+}
+
+.panel-content {
+    padding: 18px;
+
+    color: #111;
+
+    font-size: 12px;
+
+    min-height: 170px;
+}
+
+.panel-content h2 {
+    margin-bottom: 10px;
+
+    font-size: 18px;
+}
+
+.panel-content p {
+    margin-bottom: 12px;
+}
+
+.panel-content hr {
+    border: 0;
+
+    border-top: 1px solid #808080;
+    border-bottom: 1px solid white;
+
+    margin: 12px 0;
+}
+
+.powered-by {
+    margin-top: 8px;
+    margin-bottom: 0 !important;
+
+    color: #666;
+    font-size: 10px;
     text-align: center;
 }
+
+.powered-by a {
+    color: #0000ee;
+    text-decoration: underline;
+}
+
+.powered-by a:visited {
+    color: #551a8b;
+}
+
+.powered-by a:hover {
+    color: #000099;
+}
+
+.time-box {
+    position: absolute;
+
+    right: 15px;
+    top: 15px;
+
+    width: 180px;
+    height: 70px;
+
+    padding: 8px 14px;
+
+    color: white;
+
+    background: rgba(20, 10, 30, 0.65);
+
+    border: 1px solid rgba(190, 150, 240, 0.45);
+    border-radius: 3px;
+
+    text-align: center;
+
+    font-family: Tahoma, Arial, sans-serif;
+
+    backdrop-filter: blur(6px);
+
+    cursor: move;
+
+    resize: both;
+    overflow: auto;
+
+    min-width: 120px;
+    min-height: 50px;
+}
+
+#currentTime {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.time-label {
+    margin-top: 2px;
+
+    color: #cfcfcf;
+
+    font-size: 10px;
+}
+
+.music-button {
+    position: fixed;
+    right: 20px;
+    bottom: 75px;
+
+    width: 55px;
+    height: 55px;
+
+    border-radius: 50%;
+
+    border: 2px solid rgba(255,255,255,0.5);
+
+    background: linear-gradient(
+        135deg,
+        #8B5CF6,
+        #241238
+    );
+
+    color: white;
+
+    font-family: Tahoma, Arial, sans-serif;
+    font-size: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 3px 10px rgba(0,0,0,0.5);
+
+    z-index: 1005;
+
+    transition: 0.15s;
+}
+.music-button:active {
+    transform: scale(0.95);
+}
+
+.xp-button {
+    padding: 5px 20px;
+
+    background: #d4d0c8;
+
+    border-top: 2px solid white;
+    border-left: 2px solid white;
+    border-right: 2px solid #404040;
+    border-bottom: 2px solid #404040;
+
+    font-family: Tahoma, Arial, sans-serif;
+    font-size: 12px;
+
+    cursor: pointer;
+}
+
+.xp-button:active {
+    border-top-color: #404040;
+    border-left-color: #404040;
+    border-right-color: white;
+    border-bottom-color: white;
+}
+
+.navbar {
+    position: absolute;
+
+    bottom: 0;
+    left: 0;
+
+    width: 100%;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 6px;
+
+    background: linear-gradient(
+        to bottom,
+        rgba(92,45,150,0.82) 0%,
+        rgba(48,20,75,0.82) 50%,
+        rgba(5,5,5,0.90) 100%
+    );
+
+    backdrop-filter: blur(8px);
+
+    border-top: 2px solid rgba(160,110,220,0.7);
+
+    box-shadow:
+        0 -2px 6px rgba(0,0,0,0.6);
+
+    z-index: 1000;
+}
+
+.desktop-icons {
+    position: absolute;
+    inset: 0;
+
+    z-index: 1001;
+
+    pointer-events: none;
+}
+
+.desktop-icon {
+    position: absolute;
+
+    width: 80px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    color: white;
+    font-family: Tahoma, Arial, sans-serif;
+    font-size: 11px;
+
+    text-align: center;
+    user-select: none;
+
+    cursor: default;
+
+    pointer-events: auto;
+}
+
+.desktop-icon img {
+    width: 48px;
+    height: 48px;
+
+    object-fit: contain;
+
+    margin-bottom: 4px;
+}
+
+.desktop-icon span {
+    display: block;
+
+    padding: 2px 3px;
+
+    color: white;
+
+    text-shadow:
+        1px 1px 2px black,
+        -1px -1px 2px black;
+}
+
+/* Windows-style selected icon */
+
+.desktop-icon.selected span {
+    background: #316ac5;
+
+    border: 1px dotted white;
+}
+
+/* selected icon image gets a slight blue overlay */
+.desktop-icon.selected img {
+    filter: brightness(0.8);
+}
+
+.desktop-icon.dragging {
+    cursor: grabbing;
+}
+
+.logo {
+    display: block;
+
+    color: #111;
+
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    padding: 7px 14px;
+
+    background: linear-gradient(
+        to bottom,
+        #fff36b 0%,
+        #ffd92f 45%,
+        #e6a900 100%
+    );
+
+    border: 1px solid #9b7200;
+
+    border-radius: 0 9px 9px 0;
+
+    box-shadow:
+        inset 0 1px rgba(255,255,255,0.8),
+        1px 0 4px rgba(0,0,0,0.5);
+
+    margin-right: 7px;
+}
+
+.logo:hover {
+    background: linear-gradient(
+        to bottom,
+        #fff98c,
+        #ffe34d,
+        #f0b900
+    );
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+
+    gap: 3px;
+
+    list-style: none;
+}
+
+.nav-links a,
+.nav-button {
+    display: block;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 12px;
+
+    padding: 6px 10px;
+
+    border: 1px solid transparent;
+    border-radius: 3px;
+
+    text-shadow: 1px 1px rgba(0,0,0,0.5);
+
+    cursor: pointer;
+
+    transition: 0.15s;
+}
+
+.nav-links a:hover,
+.nav-button:hover {
+    background: linear-gradient(
+        to bottom,
+        rgba(130,75,200,0.8),
+        rgba(55,20,90,0.9)
+    );
+
+    border-color: rgba(200,160,255,0.7);
+}
+
+.task-buttons {
+    display: flex;
+
+    align-items: center;
+
+    gap: 3px;
+
+    margin-left: 5px;
+
+    height: 100%;
+}
+
+.task-window {
+    display: block;
+
+    width: 120px;
+    max-width: 120px;
+
+    overflow: hidden;
+
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
+
+    color: white;
+
+    background: rgba(25,10,40,0.65);
+
+    border-top: 1px solid rgba(200,160,255,0.45);
+    border-left: 1px solid rgba(200,160,255,0.45);
+    border-right: 1px solid rgba(20,5,30,0.8);
+    border-bottom: 1px solid rgba(20,5,30,0.8);
+
+    padding: 5px 10px;
+
+    font-family: Tahoma, Arial, sans-serif;
+    font-size: 11px;
+
+    cursor: pointer;
+
+    text-shadow: 1px 1px rgba(0,0,0,0.5);
+}
+
+.task-window:hover {
+    background: rgba(120,70,190,0.7);
+}
+
+.task-window.active {
+    background: rgba(130,75,200,0.8);
+}
+
+.nav-right {
+    margin-left: auto;
+
+    padding-left: 8px;
+
+    border-left: 1px solid rgba(0,0,0,0.5);
+}
+
+#homePanel {
+    width: 440px;
+}
+
+#aboutPanel {
+    width: 440px;
+}
+
+#projectsPanel {
+    width: 500px;
+}
+
+#contactPanel {
+    width: 420px;
+}
+
+#catsPanel {
+    width: 591px;
+    height: 392px;
+}
 </style>
+
 </head>
 
 <body>
-<div class="center">
-    <div class="text">Not applicable</div>
+
+<div id="intro">
+
+    <button id="enterButton">
+        enter :3
+    </button>
+
 </div>
+
+<audio id="signinMusic" preload="auto">
+    <source src="https://www.ralsei.fit/signin.mp3" type="audio/mpeg">
+</audio>
+
+<div id="site">
+
+<div class="background">
+
+    <img src="https://www.ralsei.fit/background.jpg">
+
+    <div class="overlay"></div>
+
+    <div class="panel" id="homePanel">
+
+        <div class="panel-title">
+
+            <span>meow.exe</span>
+
+            <div class="window-buttons">
+
+                <button
+                    class="window-button"
+                    onclick="minimizePanel('homePanel')">
+                    −
+                </button>
+
+                <button
+                    class="window-button close"
+                    onclick="closePanel('homePanel')">
+                    ×
+                </button>
+
+            </div>
+
+        </div>
+
+<div class="panel-content">
+
+<h2>hai :3</h2>
+
+<p>
+    welcome to RALSEI.FIT!!!
+</p>
+
+<hr>
+
+<p>
+    WELCOME TO RALSEI.FIT!!!! HAHAHAHAH
+</p>
+
+<p>
+    TTHANKJ U TO MY ADORABLE BF FOR THE DOMAIN :P
+    <br>
+    (I BASED IT OFF
+    <a
+        href="https://deltarune.fandom.com/wiki/Ralsei"
+        target="_blank">
+        RALSEI FROM DELTARUNE
+    </a>)
+</p>
+
+<p>
+    i made this site for jokes and funs lowkey but i hope u enjoyed ur time here :P
+</p>
+
+<p>
+    i upload WHATEVER here and i make blogs and all that yada yada
+</p>
+
+<p>
+    btw!!!! i have a mc server!!! its coming soon!
+    <br>
+    u should see its site at:
+    <a href="/minecraft">ralsei.fit/minecraft</a>
+    <br>
+    (COMING SOON)
+</p>
+
+<p>
+    hhope u like my site :P
+</p>
+
+<p>
+    - clovvvvv :3
+</p>
+
+<button
+    class="xp-button"
+    onclick="alert('meow :3')">
+    meow
+</button>
+
+</div>
+
+
+    </div>
+
+    <div class="panel hidden" id="aboutPanel">
+
+        <div class="panel-title">
+
+            <span>who is this chud.exe</span>
+
+            <div class="window-buttons">
+
+                <button
+                    class="window-button"
+                    onclick="minimizePanel('aboutPanel')">
+                    −
+                </button>
+
+                <button
+                    class="window-button close"
+                    onclick="closePanel('aboutPanel')">
+                    ×
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="panel-content">
+
+            <h2>about me</h2>
+
+            <p>
+                i'm cloverCLOWZERRR :3
+            </p>
+
+            <p>
+                i'm a video game creator, and i like to write stories and i make ALOT OF MUSIC and a bunch of
+                internet shit.
+            </p>
+
+            <hr>
+
+            <p>
+                i wanted to make alot of stuff when i started using the internet, like "what if this existed?" and "what if i made that?", i love to create and DESTROY.
+            </p>
+            
+              <hr>
+
+            <p>
+                i got alot of hate so i don't like to do music as much as i wanted to do but i learn everyday!!!!!!
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="panel hidden" id="projectsPanel">
+
+        <div class="panel-title">
+
+            <span>my stuff.exe</span>
+
+            <div class="window-buttons">
+
+                <button
+                    class="window-button"
+                    onclick="minimizePanel('projectsPanel')">
+                    −
+                </button>
+
+                <button
+                    class="window-button close"
+                    onclick="closePanel('projectsPanel')">
+                    ×
+                </button>
+
+            </div>
+
+        </div>
+
+<div class="panel-content">
+
+<h2>my stuff</h2>
+
+<p>
+    these are my cool and very great projects:
+</p>
+
+<hr>
+
+<p>
+    <strong>redium.xyz</strong> - a 2017 Roblox revival i created with my best friend @pokltyy
+    after his first revival failed. it originally started as reblox.vip,
+    but staymad (owner of the name) sent me death threats for it-
+    now we have 150+ members (tysm all) :3
+</p>
+
+<p>
+    <strong>mycontact</strong>
+    (<a href="http://mycontact.reblox.vip" target="_blank">mycontact.reblox.vip</a>):
+    a Facebook 2009 type social media that i'm admin on AND i help develop!
+    with 30+ users (if i counted correctly-)
+</p>
+
+<p>
+    <strong>MiraOS</strong> - a psychological horror game where you find
+    a 2000's computer for the first time in decades, but you're not alone.
+    your only goal is to reset the PC, but don't worry!
+    Mira and her friends are here to keep you "safe..."
+    however i'm still planning the story so it's not out yet-
+</p>
+
+<p>
+    <strong>RalseiSMP</strong> (aka. mc.ralsei.fit) - a Minecraft server
+    i made that's the best SMP for new players!
+    we support 1.20.5 to the newest version!
+    (you can play on cracked)
+</p>
+
+</div>
+
+
+    </div>
+
+    <div class="panel hidden" id="contactPanel">
+
+        <div class="panel-title">
+
+            <span>talk to me :P</span>
+
+            <div class="window-buttons">
+
+                <button
+                    class="window-button"
+                    onclick="minimizePanel('contactPanel')">
+                    −
+                </button>
+
+                <button
+                    class="window-button close"
+                    onclick="closePanel('contactPanel')">
+                    ×
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="panel-content">
+
+            <h2>contact</h2>
+
+            <p>
+                wow...you wanna talk to me?! ahem ahem..
+            </p>
+
+            <hr>
+
+            <p>
+                discord: @cloverclowzer - the fastest i can respond to
+            </p>
+            
+              <p>
+                email contact: clover@ralsei.fit
+            </p>
+
+            <hr>
+
+            <h2>socials</h2>
+
+            <p>
+                catch me up here (wtf did i js say-):
+            </p>
+
+            <hr>
+            
+              <p>
+                tiktok: @cloverclowzer
+            </p>
+            
+              <p>
+                instagram: @cloverclowzer
+            </p>
+
+            <p>
+                twitter: @cloverclowzerz
+            </p>
+
+            <p>
+                YOUTUBEEEE: @clovclowzer
+            </p>
+            
+              <p>
+                redium.xyz discord: dsc.gg/redium
+            </p>
+
+        </div>
+
+    </div>
+
+<div class="panel hidden" id="catsPanel">
+
+    <div class="panel-title">
+
+        <span>cats :3.exe</span>
+
+        <div class="window-buttons">
+
+            <button
+                class="window-button"
+                onclick="minimizePanel('catsPanel')">
+                −
+            </button>
+
+            <button
+                class="window-button close"
+                onclick="closePanel('catsPanel')">
+                ×
+            </button>
+
+        </div>
+
+    </div>
+
+<div class="panel-content">
+
+    <iframe
+        src="http://mycontact.reblox.vip/dashboard/embed.php?id=38&withplayer=1"
+        width="560"
+        height="315"
+        frameborder="0"
+        allowfullscreen>
+    </iframe>
+
+    <p class="powered-by">
+        powered by
+        <a href="http://mycontact.reblox.vip" target="_blank">
+            MyContact
+        </a>
+    </p>
+
+</div>
+
+</div>
+
+<button id="musicButton" class="music-button" title="play music">
+    ▶
+</button>
+
+<audio id="siteMusic" preload="auto">
+    <source src="https://www.ralsei.fit/cat.mp3" type="audio/mpeg">
+</audio>
+
+    <nav class="navbar">
+
+        <a href="#" class="logo" onclick="openPanel('homePanel'); return false;">
+            cloverclowzer :3
+        </a>
+
+
+        <ul class="nav-links">
+
+            <li>
+                <a
+                    href="#"
+                    onclick="openPanel('homePanel'); return false;">
+                    meow
+                </a>
+            </li>
+
+            <li>
+                <a
+                    href="#"
+                    onclick="openPanel('aboutPanel'); return false;">
+                    who is this chud
+                </a>
+            </li>
+
+            <li>
+                <a
+                    href="#"
+                    onclick="openPanel('projectsPanel'); return false;">
+                    my stuff
+                </a>
+            </li>
+
+            <li>
+                <a
+                    href="#"
+                    onclick="openPanel('contactPanel'); return false;">
+                    talk to me :P
+                </a>
+            </li>
+
+        </ul>
+
+        <div
+            class="task-buttons"
+            id="taskButtons">
+        </div>
+
+        <div class="nav-right">
+
+            <a
+                href="#"
+                class="nav-button"
+                onclick="openPanel('catsPanel'); return false;">
+                cats :3
+            </a>
+
+        </div>
+
+    </nav>
+
+</div>
+
+</div>
+
+<div class="time-box">
+    <div id="currentTime">00:00:00</div>
+    <div class="time-label">time for me</div>
+</div>
+
+<div class="desktop-icons">
+
+    <div class="desktop-icon"
+         data-panel="game1Panel"
+         style="left: 25px; top: 90px;">
+
+        <img src="http://ralsei.fit/aliendestroyers.png" alt="Alien Destroyer">
+        <span>alien destroyer</span>
+
+    </div>
+
+    <div class="desktop-icon"
+         data-panel="game2Panel"
+         style="left: 25px; top: 180px;">
+
+        <img src="game2.png" alt="Cat">
+        <span>cat.html</span>
+
+    </div>
+
+    <div class="desktop-icon"
+         data-panel="game3Panel"
+         style="left: 25px; top: 270px;">
+
+        <img src="game3.png" alt="Game">
+        <span>yea</span>
+
+    </div>
+
+</div>
+
+<script>
+
+const intro = document.getElementById("intro");
+const site = document.getElementById("site");
+const enterButton = document.getElementById("enterButton");
+const music = document.getElementById("signinMusic");
+
+enterButton.addEventListener("click", function() {
+
+    music.play().catch(function(error) {
+        console.log("son btw i couldnt start the audio", error);
+    });
+
+    intro.style.opacity = "0";
+
+    site.style.opacity = "1";
+
+    setTimeout(function() {
+        intro.style.display = "none";
+    }, 1500);
+
+});
+
+let highestZ = 20;
+
+const panelNames = {
+
+    homePanel: "meow.exe",
+
+    aboutPanel: "about.exe",
+
+    projectsPanel: "my stuff.exe",
+
+    contactPanel: "contact.exe",
+
+    catsPanel: "cats :3"
+
+};
+
+function openPanel(id) {
+
+    const panel = document.getElementById(id);
+
+    if (!panel) return;
+
+    panel.classList.remove("hidden");
+
+    panel.style.display = "block";
+
+    removeTaskButton(id);
+
+    bringToFront(panel);
+
+}
+
+function minimizePanel(id) {
+
+    const panel = document.getElementById(id);
+
+    if (!panel) return;
+
+    panel.style.display = "none";
+
+    addTaskButton(id);
+
+}
+
+function closePanel(id) {
+
+    const panel = document.getElementById(id);
+
+    if (!panel) return;
+
+    panel.style.display = "none";
+
+    panel.classList.add("hidden");
+
+    removeTaskButton(id);
+
+}
+
+function addTaskButton(id) {
+
+    const existing =
+        document.getElementById("task-" + id);
+
+    if (existing) return;
+
+
+    const button =
+        document.createElement("button");
+
+    button.id = "task-" + id;
+
+    button.className = "task-window";
+
+    button.textContent = panelNames[id];
+
+
+    button.onclick = function() {
+
+        const panel =
+            document.getElementById(id);
+
+        if (!panel) return;
+
+        if (panel.style.display === "none") {
+
+            panel.style.display = "block";
+
+            panel.classList.remove("hidden");
+
+            bringToFront(panel);
+
+            return;
+
+        }
+
+        bringToFront(panel);
+
+    };
+
+
+    document
+        .getElementById("taskButtons")
+        .appendChild(button);
+
+}
+
+function removeTaskButton(id) {
+
+    const button =
+        document.getElementById("task-" + id);
+
+    if (button) {
+        button.remove();
+    }
+
+}
+
+function bringToFront(panel) {
+
+    highestZ++;
+
+    panel.style.zIndex = highestZ;
+
+}
+
+document.querySelectorAll(".panel").forEach(function(panel) {
+
+    panel.addEventListener("mousedown", function() {
+
+        bringToFront(panel);
+
+    });
+
+});
+
+
+
+document.querySelectorAll(".panel-title").forEach(function(title) {
+
+    let dragging = false;
+
+    let offsetX = 0;
+    let offsetY = 0;
+
+    const panel =
+        title.closest(".panel");
+
+
+    title.addEventListener("mousedown", function(e) {
+
+        if (e.target.closest(".window-buttons")) {
+            return;
+        }
+
+
+        dragging = true;
+
+
+        const rect =
+            panel.getBoundingClientRect();
+
+
+        offsetX =
+            e.clientX - rect.left;
+
+        offsetY =
+            e.clientY - rect.top;
+
+        panel.style.transform = "none";
+
+
+        panel.style.left =
+            rect.left + "px";
+
+        panel.style.top =
+            rect.top + "px";
+
+
+        bringToFront(panel);
+
+
+        e.preventDefault();
+
+    });
+
+
+    document.addEventListener("mousemove", function(e) {
+
+        if (!dragging) return;
+
+
+        panel.style.left =
+            (e.clientX - offsetX) + "px";
+
+        panel.style.top =
+            (e.clientY - offsetY) + "px";
+
+    });
+
+
+    document.addEventListener("mouseup", function() {
+
+        dragging = false;
+
+    });
+
+});
+
+function updateTime() {
+    const now = new Date();
+
+    const hours = String(now.getHours()).padStart(2, "0");
+    const minutes = String(now.getMinutes()).padStart(2, "0");
+    const seconds = String(now.getSeconds()).padStart(2, "0");
+
+    document.getElementById("currentTime").textContent =
+        `${hours}:${minutes}:${seconds}`;
+}
+
+updateTime();
+setInterval(updateTime, 1000);
+
+const timeBox = document.querySelector(".time-box");
+
+let draggingTime = false;
+let timeOffsetX = 0;
+let timeOffsetY = 0;
+
+timeBox.addEventListener("mousedown", function(e) {
+
+    // Don't start dragging from the resize corner
+    if (
+        e.offsetX > timeBox.clientWidth - 20 &&
+        e.offsetY > timeBox.clientHeight - 20
+    ) {
+        return;
+    }
+
+    draggingTime = true;
+
+    const rect = timeBox.getBoundingClientRect();
+
+    timeOffsetX = e.clientX - rect.left;
+    timeOffsetY = e.clientY - rect.top;
+
+    timeBox.style.right = "auto";
+    timeBox.style.bottom = "auto";
+
+    timeBox.style.left = rect.left + "px";
+    timeBox.style.top = rect.top + "px";
+
+    e.preventDefault();
+});
+
+document.addEventListener("mousemove", function(e) {
+
+    if (!draggingTime) return;
+
+    timeBox.style.left =
+        (e.clientX - timeOffsetX) + "px";
+
+    timeBox.style.top =
+        (e.clientY - timeOffsetY) + "px";
+});
+
+document.addEventListener("mouseup", function() {
+    draggingTime = false;
+});
+
+document.querySelectorAll(".desktop-icon").forEach(icon => {
+
+    let dragging = false;
+    let moved = false;
+
+    let startX = 0;
+    let startY = 0;
+
+    let offsetX = 0;
+    let offsetY = 0;
+
+    icon.addEventListener("mousedown", function(e) {
+
+        if (e.button !== 0) return;
+
+        const rect = icon.getBoundingClientRect();
+
+        startX = e.clientX;
+        startY = e.clientY;
+
+        offsetX = e.clientX - rect.left;
+        offsetY = e.clientY - rect.top;
+
+        moved = false;
+
+        // Select icon
+        document.querySelectorAll(".desktop-icon")
+            .forEach(other => other.classList.remove("selected"));
+
+        icon.classList.add("selected");
+
+        e.preventDefault();
+    });
+
+    document.addEventListener("mousemove", function(e) {
+
+        if (!icon.classList.contains("selected")) return;
+
+        const distanceX = Math.abs(e.clientX - startX);
+        const distanceY = Math.abs(e.clientY - startY);
+
+        // Only start dragging after moving a few pixels
+        if (distanceX > 5 || distanceY > 5) {
+
+            moved = true;
+            dragging = true;
+
+            icon.classList.add("dragging");
+
+            icon.style.left =
+                (e.clientX - offsetX) + "px";
+
+            icon.style.top =
+                (e.clientY - offsetY) + "px";
+        }
+
+    });
+
+    document.addEventListener("mouseup", function(e) {
+
+        if (e.button !== 0) return;
+
+        dragging = false;
+        icon.classList.remove("dragging");
+
+    });
+
+    // Double click opens the app
+    icon.addEventListener("dblclick", function() {
+
+        if (moved) return;
+
+        const panel = icon.dataset.panel;
+
+        if (panel) {
+            openPanel(panel);
+        }
+
+    });
+
+});
+
+
+/* Click empty desktop to deselect */
+
+document.addEventListener("mousedown", function(e) {
+
+    if (
+        !e.target.closest(".desktop-icon") &&
+        !e.target.closest(".panel") &&
+        !e.target.closest(".navbar") &&
+        !e.target.closest(".time-box")
+    ) {
+
+        document.querySelectorAll(".desktop-icon")
+            .forEach(icon => {
+                icon.classList.remove("selected");
+            });
+
+    }
+
+const musicButton = document.getElementById("musicButton");
+const siteMusic = document.getElementById("siteMusic");
+
+musicButton.addEventListener("click", function () {
+
+    if (siteMusic.paused) {
+
+        siteMusic.play()
+            .then(function () {
+                musicButton.textContent = "❚❚";
+            })
+            .catch(function (error) {
+                console.error("Music couldn't play:", error);
+            });
+
+    } else {
+
+        siteMusic.pause();
+        musicButton.textContent = "▶";
+
+    }
+
+});
+
+});
+
+
+</script>
+
 </body>
 </html>
