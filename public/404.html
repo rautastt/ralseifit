@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>404.exe</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background:
+                linear-gradient(
+                    rgba(20, 0, 35, 0.75),
+                    rgba(0, 0, 0, 0.85)
+                ),
+                url("https://www.ralsei.fit/background.jpg");
+
+            background-size: cover;
+            background-position: center;
+
+            font-family: Tahoma, Arial, sans-serif;
+
+            overflow: hidden;
+        }
+
+        .error-window {
+            width: 430px;
+
+            background: #ece9d8;
+
+            border: 2px solid #5b5b5b;
+
+            box-shadow:
+                8px 8px 20px rgba(0, 0, 0, 0.6);
+
+            border-radius: 5px;
+
+            animation: appear 0.4s ease;
+        }
+
+        .titlebar {
+            height: 32px;
+
+            display: flex;
+            align-items: center;
+
+            padding: 0 8px;
+
+            color: white;
+
+            font-weight: bold;
+            font-size: 13px;
+
+            background:
+                linear-gradient(
+                    to right,
+                    #6b21a8,
+                    #8b5cf6,
+                    #5b21b6
+                );
+
+            border-radius: 3px 3px 0 0;
+        }
+
+        .titlebar-buttons {
+            margin-left: auto;
+        }
+
+        .titlebar-button {
+            width: 22px;
+            height: 21px;
+
+            padding: 0;
+
+            color: white;
+
+            font-weight: bold;
+
+            background: #7c3aed;
+
+            border: 1px solid white;
+
+            cursor: pointer;
+        }
+
+        .content {
+            padding: 25px;
+        }
+
+        .error-icon {
+            display: flex;
+            align-items: center;
+
+            gap: 15px;
+
+            margin-bottom: 20px;
+        }
+
+        .error-symbol {
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #c00;
+
+            color: white;
+
+            font-size: 28px;
+            font-weight: bold;
+
+            border-radius: 50%;
+        }
+
+        h2 {
+            margin: 0;
+
+            font-size: 18px;
+
+            color: #111;
+        }
+
+        p {
+            color: #222;
+
+            font-size: 13px;
+
+            line-height: 1.5;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: flex-end;
+
+            gap: 8px;
+
+            margin-top: 25px;
+        }
+
+        .xp-button {
+            min-width: 85px;
+
+            padding: 6px 15px;
+
+            background: #eee;
+
+            border: 2px solid;
+
+            border-color:
+                white
+                #777
+                #777
+                white;
+
+            font-family: Tahoma, Arial, sans-serif;
+
+            cursor: pointer;
+        }
+
+        .xp-button:active {
+            border-color:
+                #777
+                white
+                white
+                #777;
+        }
+
+        .secret {
+            margin-top: 20px;
+
+            text-align: center;
+
+            font-size: 10px;
+
+            color: #777;
+
+            opacity: 0.5;
+        }
+
+        @keyframes appear {
+
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="error-window">
+
+        <div class="titlebar">
+
+            404.exe
+
+            <div class="titlebar-buttons">
+
+                <button
+                    class="titlebar-button"
+                    onclick="history.back()">
+                    ×
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="content">
+
+            <div class="error-icon">
+
+                <div class="error-symbol">
+                    !
+                </div>
+
+                <h2>
+                    404 - Page Not Found
+                </h2>
+
+            </div>
+
+            <p>
+                uh oh...
+            </p>
+
+            <p>
+                this page either doesn't exist,
+                clover ate it for his dinner,
+                forgot to send it here
+            </p>
+
+            <p>
+                error code:
+                <strong>FIT404LMFAO</strong>
+            </p>
+
+            <div class="buttons">
+
+                <button
+                    class="xp-button"
+                    onclick="location.href='/'">
+                    damn
+                </button>
+
+                <button
+                    class="xp-button"
+                    onclick="history.back()">
+                    back back
+                </button>
+
+            </div>
+
+            <div class="secret">
+                hey man maybe one day sumn is here...
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
