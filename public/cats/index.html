@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cat Zone</title>
+
+    <style>
+        body {
+            margin: 0;
+            background: #4da6ff;
+            color: white;
+            font-family: Tahoma, Arial, sans-serif;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        h1 {
+            margin-top: 40px;
+            font-size: 36px;
+            text-shadow: 2px 2px #2469a8;
+        }
+
+        .cat-zone {
+            width: 700px;
+            max-width: 90%;
+            margin: 30px auto;
+        }
+
+        .cat-viewer {
+            position: relative;
+            width: 100%;
+            height: 500px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cat-image {
+            max-width: 100%;
+            max-height: 500px;
+
+            object-fit: contain;
+
+            border: 4px solid white;
+            border-radius: 8px;
+
+            box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.3);
+
+            user-select: none;
+        }
+
+        .arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+
+            width: 50px;
+            height: 50px;
+
+            border: 2px solid white;
+            border-radius: 6px;
+
+            background: #2469a8;
+            color: white;
+
+            font-family: Tahoma, Arial, sans-serif;
+            font-size: 28px;
+
+            cursor: pointer;
+            z-index: 5;
+        }
+
+        .arrow:hover {
+            background: #1b568b;
+        }
+
+        .left {
+            left: 5px;
+        }
+
+        .right {
+            right: 5px;
+        }
+
+        .counter {
+            margin-top: 12px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .hint {
+            margin-top: 8px;
+            font-size: 13px;
+        }
+
+        .music-button {
+            margin-top: 18px;
+
+            padding: 8px 18px;
+
+            border: 2px solid white;
+            border-radius: 4px;
+
+            background: #2469a8;
+            color: white;
+
+            font-family: Tahoma, Arial, sans-serif;
+            font-size: 14px;
+
+            cursor: pointer;
+        }
+
+        .music-button:hover {
+            background: #1b568b;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>1000 cats</h1>
+
+    <div class="cat-zone">
+
+        <div class="cat-viewer">
+
+            <button class="arrow left" onclick="previousCat()">←</button>
+
+            <img
+                id="catImage"
+                class="cat-image"
+                src=""
+                alt="Cat"
+            >
+
+            <button class="arrow right" onclick="nextCat()">→</button>
+
+        </div>
+
+        <div class="counter" id="counter"></div>
+
+        <div class="hint">
+            use ← and → to browse the cats, also song: silly cat - Carpe
+        </div>
+
+        <button
+            class="music-button"
+            id="musicButton"
+            onclick="toggleMusic()"
+        >
+            🔊 Play Music
+        </button>
+
+    </div>
+  
+    <audio id="bgMusic" loop>
+        <source
+            src="https://www.ralsei.fit/silly%20cat.mp3"
+            type="audio/mpeg"
+        >
+    </audio>
+
+    <script>
+
+        const cats = [
+            "https://i.pinimg.com/736x/f4/d7/ea/f4d7eac1942dc3200cdaf31107512251.jpg",
+            "https://i.pinimg.com/736x/14/7f/e4/147fe444383f288b81b8852f36fa5898.jpg",
+            "https://i.pinimg.com/736x/7c/c7/8d/7cc78d0f3c85f24c5d93ce6c1a19db79.jpg",
+            "https://i.pinimg.com/736x/1c/48/e5/1c48e59739097cb03f36351a968d19c2.jpg,
+            "https://i.pinimg.com/1200x/6d/28/40/6d2840877fac9eb2fd317655bc28b67e.jpg",
+            "https://i.pinimg.com/736x/80/dd/3a/80dd3a08489d6803e0e058ccf0085be9.jpg",
+
+        ];
+
+        let currentCat = 0;
+
+        const image = document.getElementById("catImage");
+        const counter = document.getElementById("counter");
+
+        function showCat() {
+            image.src = cats[currentCat];
+
+            counter.textContent =
+                "cat " + (currentCat + 1) + " / " + cats.length;
+        }
+
+        function nextCat() {
+            currentCat++;
+
+            if (currentCat >= cats.length) {
+                currentCat = 0;
+            }
+
+            showCat();
+        }
+
+        function previousCat() {
+            currentCat--;
+
+            if (currentCat < 0) {
+                currentCat = cats.length - 1;
+            }
+
+            showCat();
+        }
+
+
+        // =========================
+        // ARROW KEYS
+        // =========================
+
+        document.addEventListener("keydown", function(event) {
+
+            if (event.key === "ArrowRight") {
+                nextCat();
+            }
+
+            if (event.key === "ArrowLeft") {
+                previousCat();
+            }
+
+        });
+
+
+        // =========================
+        // MUSIC
+        // =========================
+
+        const music = document.getElementById("bgMusic");
+        const musicButton = document.getElementById("musicButton");
+
+        function toggleMusic() {
+
+            if (music.paused) {
+
+                music.play();
+
+                musicButton.textContent = "🔇 Stop Music";
+
+            } else {
+
+                music.pause();
+
+                musicButton.textContent = "🔊 Play Music";
+
+            }
+
+        }
+
+        showCat();
+
+    </script>
+
+</body>
+</html>
