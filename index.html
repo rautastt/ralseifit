@@ -1832,8 +1832,17 @@ function clippyTalk() {
     clippyBubble.textContent = line;
 }
 
-setInterval(clippyTalk, 15000);
+let clippyTimer = null;
 
+function startClippy() {
+    if (clippyTimer) {
+        clearInterval(clippyTimer);
+    }
+
+    clippyTimer = setInterval(clippyTalk, 15000);
+}
+
+startClippy();
 function closeClippy() {
     document.getElementById("ralseiClippy").style.display = "none";
 }
