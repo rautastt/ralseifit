@@ -657,6 +657,11 @@ body {
     max-height: 320px;
     overflow-y: auto;
 }
+
+#chatroomPanel {
+    width: 591px;
+    height: 415px;
+} 
 </style>
 
 </head>
@@ -1134,11 +1139,11 @@ body {
     </div>
 
     <div class="desktop-icon"
-         data-panel="game3Panel"
+         data-panel="chatroomPanel"
          style="left: 25px; top: 270px;">
 
         <img src="game3.png" alt="Game">
-        <span>yea</span>
+        <span>chatroom.exe</span>
 
     </div>
 
@@ -1274,6 +1279,45 @@ body {
 
 </div>
 
+    </div>
+
+<div class="panel hidden" id="chatroomPanel">
+
+    <div class="panel-title">
+
+        <span>chatroom.exe</span>
+
+        <div class="window-buttons">
+
+            <button
+                class="window-button"
+                onclick="minimizePanel('catsPanel')">
+                −
+            </button>
+
+            <button
+                class="window-button close"
+                onclick="closePanel('catsPanel')">
+                ×
+            </button>
+
+        </div>
+
+    </div>
+
+<div class="panel-content">
+
+    <iframe
+        src="https://chat.ralsei.fit"
+        width="560"
+        height="315"
+        frameborder="0"
+        allowfullscreen>
+    </iframe>
+</p>
+    
+</div>
+    
 <script src="/oneko.js"></script>
     
 <script>
