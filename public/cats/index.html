@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Cat Zone</title>
+    <title>Welcome to the Cat Zone</title>
 
     <style>
         body {
@@ -13,11 +13,10 @@
             color: white;
             font-family: Tahoma, Arial, sans-serif;
             text-align: center;
-            overflow: hidden;
         }
 
         h1 {
-            margin-top: 40px;
+            margin-top: 35px;
             font-size: 36px;
             text-shadow: 2px 2px #2469a8;
         }
@@ -30,6 +29,7 @@
 
         .cat-viewer {
             position: relative;
+
             width: 100%;
             height: 500px;
 
@@ -39,8 +39,8 @@
         }
 
         .cat-image {
-            max-width: 100%;
-            max-height: 500px;
+            max-width: 90%;
+            max-height: 480px;
 
             object-fit: contain;
 
@@ -61,7 +61,7 @@
             height: 50px;
 
             border: 2px solid white;
-            border-radius: 6px;
+            border-radius: 5px;
 
             background: #2469a8;
             color: white;
@@ -70,7 +70,7 @@
             font-size: 28px;
 
             cursor: pointer;
-            z-index: 5;
+            z-index: 10;
         }
 
         .arrow:hover {
@@ -86,7 +86,7 @@
         }
 
         .counter {
-            margin-top: 12px;
+            margin-top: 10px;
             font-size: 16px;
             font-weight: bold;
         }
@@ -121,41 +121,42 @@
 
 <body>
 
-    <h1>1000 cats</h1>
+    <h1>🐱 welcome to the cat zone 🐱</h1>
 
     <div class="cat-zone">
 
         <div class="cat-viewer">
 
-            <button class="arrow left" onclick="previousCat()">←</button>
+            <button id="previousButton" class="arrow left">
+                ←
+            </button>
 
             <img
                 id="catImage"
                 class="cat-image"
-                src=""
                 alt="Cat"
             >
 
-            <button class="arrow right" onclick="nextCat()">→</button>
+            <button id="nextButton" class="arrow right">
+                →
+            </button>
 
         </div>
 
-        <div class="counter" id="counter"></div>
+        <div id="counter" class="counter"></div>
 
         <div class="hint">
-            use ← and → to browse the cats, also song: silly cat - Carpe
+            use ← and → to browse the cats
         </div>
 
-        <button
-            class="music-button"
-            id="musicButton"
-            onclick="toggleMusic()"
-        >
+        <button id="musicButton" class="music-button">
             🔊 Play Music
         </button>
 
     </div>
-  
+
+
+    <!-- CHANGE THIS TO YOUR MUSIC URL -->
     <audio id="bgMusic" loop>
         <source
             src="https://www.ralsei.fit/silly%20cat.mp3"
@@ -163,29 +164,44 @@
         >
     </audio>
 
+
     <script>
-
-        const cats = [
-            "https://i.pinimg.com/736x/f4/d7/ea/f4d7eac1942dc3200cdaf31107512251.jpg",
-            "https://i.pinimg.com/736x/14/7f/e4/147fe444383f288b81b8852f36fa5898.jpg",
-            "https://i.pinimg.com/736x/7c/c7/8d/7cc78d0f3c85f24c5d93ce6c1a19db79.jpg",
-            "https://i.pinimg.com/736x/1c/48/e5/1c48e59739097cb03f36351a968d19c2.jpg",
-            "https://i.pinimg.com/1200x/6d/28/40/6d2840877fac9eb2fd317655bc28b67e.jpg",
-            "https://i.pinimg.com/736x/80/dd/3a/80dd3a08489d6803e0e058ccf0085be9.jpg"
-
-        ];
-
+const cats = [
+    "https://i.pinimg.com/736x/f4/d7/ea/f4d7eac1942dc3200cdaf31107512251.jpg",
+    "https://i.pinimg.com/736x/14/7f/e4/147fe444383f288b81b8852f36fa5898.jpg",
+    "https://i.pinimg.com/736x/7c/c7/8d/7cc78d0f3c85f24c5d93ce6c1a19db79.jpg",
+    "https://i.pinimg.com/736x/1c/48/e5/1c48e59739097cb03f36351a968d19c2.jpg",
+    "https://i.pinimg.com/1200x/6d/28/40/6d2840877fac9eb2fd317655bc28b67e.jpg",
+    "https://i.pinimg.com/736x/80/dd/3a/80dd3a08489d6803e0e058ccf0085be9.jpg"
+];
         let currentCat = 0;
 
-        const image = document.getElementById("catImage");
+        const catImage = document.getElementById("catImage");
         const counter = document.getElementById("counter");
 
+        const previousButton =
+            document.getElementById("previousButton");
+
+        const nextButton =
+            document.getElementById("nextButton");
+
+        const musicButton =
+            document.getElementById("musicButton");
+
+        const bgMusic =
+            document.getElementById("bgMusic");
+
+
         function showCat() {
-            image.src = cats[currentCat];
+            catImage.src = cats[currentCat];
 
             counter.textContent =
-                "cat " + (currentCat + 1) + " / " + cats.length;
+                "cat " +
+                (currentCat + 1) +
+                " / " +
+                cats.length;
         }
+
 
         function nextCat() {
             currentCat++;
@@ -196,6 +212,7 @@
 
             showCat();
         }
+
 
         function previousCat() {
             currentCat--;
@@ -208,9 +225,16 @@
         }
 
 
-        // =========================
-        // ARROW KEYS
-        // =========================
+        previousButton.addEventListener(
+            "click",
+            previousCat
+        );
+
+        nextButton.addEventListener(
+            "click",
+            nextCat
+        );
+
 
         document.addEventListener("keydown", function(event) {
 
@@ -225,33 +249,28 @@
         });
 
 
-        // =========================
-        // MUSIC
-        // =========================
+        musicButton.addEventListener("click", function() {
 
-        const music = document.getElementById("bgMusic");
-        const musicButton = document.getElementById("musicButton");
+            if (bgMusic.paused) {
 
-        function toggleMusic() {
+                bgMusic.play();
 
-            if (music.paused) {
-
-                music.play();
-
-                musicButton.textContent = "🔇 Stop Music";
+                musicButton.textContent =
+                    "🔇 Stop Music";
 
             } else {
 
-                music.pause();
+                bgMusic.pause();
 
-                musicButton.textContent = "🔊 Play Music";
+                musicButton.textContent =
+                    "🔊 Play Music";
 
             }
 
-        }
+        });
+
 
         showCat();
-
     </script>
 
 </body>
