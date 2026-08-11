@@ -1155,7 +1155,12 @@ body {
                    onclick="openPanel('friendsPanel'); return false;">
                    my friends
               </a>
-               
+           <li>
+               <a
+                   href="#"
+                   onclick="openPanel('newsletterPanel'); return false;">
+                   newsletters :333
+              </a>
 </li>
             
         </ul>
@@ -1460,6 +1465,67 @@ body {
             </a>
             
         </div>
+
+    </div>
+
+</div>
+
+<div class="panel hidden" id="newsletterPanel">
+
+    <div class="panel-title">
+
+        <span>newsletter.exe</span>
+
+        <div class="window-buttons">
+
+            <button
+                class="window-button"
+                onclick="minimizePanel('newsletterPanel')">
+                −
+            </button>
+
+            <button
+                class="window-button close"
+                onclick="closePanel('newsletterPanel')">
+                ×
+            </button>
+
+        </div>
+
+    </div>
+
+    <div class="panel-content">
+
+        <h2>ralsei.fit newsletters</h2>
+
+        <p>sign up for updates about anything! blogs, projects...zzz i fell asleep</p>
+
+        <form
+            action="https://assets.mailerlite.com/jsonp/2568621/forms/195466784979027416/subscribe"
+            method="post"
+            target="_blank">
+
+            <input
+                type="email"
+                name="fields[email]"
+                placeholder="my email"
+                required>
+
+            <input
+                type="hidden"
+                name="ml-submit"
+                value="1">
+
+            <input
+                type="hidden"
+                name="anticsrf"
+                value="true">
+
+            <button type="submit">
+                pls sub :3
+            </button>
+
+        </form>
 
     </div>
 
