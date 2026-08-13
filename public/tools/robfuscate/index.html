@@ -1,0 +1,2173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAUTA Luau Obfuscator</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+}
+
+body {
+    font-family: Tahoma, "Segoe UI", sans-serif;
+    color: #111;
+    background:
+        linear-gradient(
+            rgba(25, 10, 55, 0.25),
+            rgba(10, 5, 30, 0.45)
+        ),
+        url("https://ralsei.fit/background.jpg") center center / cover fixed no-repeat;
+}
+
+/* =========================
+   XP WINDOW
+========================= */
+
+.window {
+    width: min(1250px, calc(100% - 30px));
+    margin: 25px auto;
+    border: 2px solid #183b8f;
+    border-radius: 8px 8px 3px 3px;
+    background: #ece9d8;
+    box-shadow:
+        0 8px 30px rgba(0, 0, 0, .55),
+        inset 1px 1px rgba(255,255,255,.8);
+    overflow: hidden;
+}
+
+.titlebar {
+    height: 38px;
+    display: flex;
+    align-items: center;
+    padding: 4px 7px;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+
+    background:
+        linear-gradient(
+            #5c9cff 0%,
+            #2868d9 45%,
+            #174bb5 50%,
+            #2768d2 100%
+        );
+
+    text-shadow: 1px 1px #174080;
+}
+
+.title-icon {
+    width: 25px;
+    height: 25px;
+    margin-right: 7px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 4px;
+    background: linear-gradient(135deg, #8b5cff, #dca5ff);
+    border: 1px solid #eee;
+    box-shadow: inset 1px 1px rgba(255,255,255,.6);
+
+    font-size: 15px;
+}
+
+.title-text {
+    flex: 1;
+}
+
+.window-buttons {
+    display: flex;
+    gap: 3px;
+}
+
+.window-button {
+    width: 22px;
+    height: 21px;
+
+    border: 1px solid #fff;
+    border-right-color: #24468c;
+    border-bottom-color: #24468c;
+
+    border-radius: 3px;
+
+    background: linear-gradient(#76aaff, #3166c3);
+
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.window-button.close {
+    background: linear-gradient(#ff8077, #c92b20);
+}
+
+/* =========================
+   XP MENU
+========================= */
+
+.menu {
+    display: flex;
+    gap: 2px;
+    padding: 3px 7px;
+
+    background: #eee9d8;
+    border-bottom: 1px solid #aaa;
+}
+
+.menu span {
+    padding: 3px 9px;
+    font-size: 12px;
+    cursor: default;
+}
+
+.menu span:hover {
+    background: #316ac5;
+    color: white;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.hero {
+    padding: 20px;
+    background:
+        linear-gradient(
+            rgba(255,255,255,.72),
+            rgba(235,232,214,.85)
+        );
+    border-bottom: 1px solid #aaa;
+}
+
+.hero-top {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.ascii {
+    font-family: "Courier New", monospace;
+    font-size: 10px;
+    line-height: 9px;
+    font-weight: bold;
+    color: #7446a8;
+    white-space: pre;
+}
+
+.hero h1 {
+    margin: 0;
+    color: #17469d;
+    font-size: 25px;
+}
+
+.hero h1 span {
+    color: #7a43a9;
+}
+
+.hero p {
+    margin: 5px 0 0;
+    color: #555;
+    font-size: 12px;
+}
+
+/* =========================
+   CONTENT
+========================= */
+
+.content {
+    padding: 14px;
+}
+
+.workspace {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+@media(max-width: 900px) {
+    .workspace {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =========================
+   XP GROUP BOX
+========================= */
+
+.group {
+    border: 1px solid #919b9c;
+    background: #f4f1df;
+
+    box-shadow:
+        inset 1px 1px white,
+        inset -1px -1px #d0cbb8;
+}
+
+.group-title {
+    margin: -1px 0 0 8px;
+    padding: 0 5px;
+
+    display: table;
+
+    background: #f4f1df;
+
+    color: #17469d;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.editor {
+    padding: 9px;
+}
+
+/* =========================
+   EDITOR
+========================= */
+
+textarea,
+.output {
+    width: 100%;
+    height: 430px;
+
+    resize: vertical;
+
+    border: 2px inset #fff;
+    background: #111827;
+
+    color: #e5e7eb;
+
+    font-family: "Courier New", Consolas, monospace;
+    font-size: 12px;
+    line-height: 1.45;
+
+    padding: 10px;
+
+    outline: none;
+}
+
+textarea:focus {
+    border-color: #316ac5;
+}
+
+.output {
+    margin: 0;
+    overflow: auto;
+    white-space: pre;
+}
+
+/* =========================
+   EDITOR HEADER
+========================= */
+
+.editor-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 6px;
+
+    font-size: 11px;
+    color: #555;
+}
+
+.counter {
+    color: #17469d;
+    font-weight: bold;
+}
+
+/* =========================
+   CONTROLS
+========================= */
+
+.options {
+    margin-top: 12px;
+
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+}
+
+@media(max-width: 650px) {
+    .options {
+        grid-template-columns: 1fr;
+    }
+}
+
+.option {
+    padding: 5px;
+
+    font-size: 11px;
+
+    border: 1px solid #d0ccb9;
+    background: #f8f6e9;
+
+    box-shadow: inset 1px 1px white;
+}
+
+.option label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.option input {
+    accent-color: #316ac5;
+}
+
+/* =========================
+   SELECT
+========================= */
+
+select {
+    width: 100%;
+
+    margin-top: 4px;
+
+    border: 2px inset white;
+    background: white;
+
+    font-family: Tahoma, sans-serif;
+    font-size: 11px;
+
+    padding: 2px;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 7px;
+
+    margin-top: 10px;
+}
+
+button {
+    min-width: 85px;
+
+    padding: 5px 14px;
+
+    border: 1px solid #003c74;
+    border-radius: 3px;
+
+    background:
+        linear-gradient(
+            #ffffff,
+            #eeeeee 45%,
+            #d4d0c8 50%,
+            #eeeeee
+        );
+
+    color: #111;
+
+    font-family: Tahoma, sans-serif;
+    font-size: 11px;
+
+    box-shadow:
+        inset 1px 1px white,
+        1px 1px rgba(0,0,0,.25);
+
+    cursor: pointer;
+}
+
+button:hover {
+    background:
+        linear-gradient(
+            #fff,
+            #dceaff 45%,
+            #bdd4f5 50%,
+            #e8f1ff
+        );
+}
+
+button:active {
+    border-style: inset;
+    box-shadow: none;
+}
+
+button.primary {
+    background:
+        linear-gradient(
+            #8fc0ff,
+            #4f8ee9 45%,
+            #316ac5 50%,
+            #6da3ef
+        );
+
+    color: white;
+    text-shadow: 1px 1px #31558b;
+    font-weight: bold;
+}
+
+/* =========================
+   STATS
+========================= */
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    margin-top: 7px;
+
+    border: 2px inset white;
+    background: #dedbd0;
+
+    font-size: 10px;
+}
+
+.stat {
+    padding: 5px 7px;
+    border-right: 1px solid #aaa;
+}
+
+.stat:last-child {
+    border-right: none;
+}
+
+.stat b {
+    color: #17469d;
+}
+
+/* =========================
+   LOWER PANEL
+========================= */
+
+.bottom {
+    margin-top: 12px;
+}
+
+.warning {
+    padding: 9px 11px;
+
+    border: 1px solid #b7a800;
+
+    background: #fffbd2;
+
+    font-size: 11px;
+    color: #514b00;
+}
+
+/* =========================
+   STATUS BAR
+========================= */
+
+.statusbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-top: 12px;
+
+    border: 1px inset #fff;
+    background: #eee9d8;
+
+    padding: 4px 7px;
+
+    font-size: 10px;
+    color: #444;
+}
+
+.status-left {
+    display: flex;
+    gap: 15px;
+}
+
+.status-online {
+    color: #26752a;
+    font-weight: bold;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.credit {
+    text-align: center;
+
+    padding: 14px 5px 4px;
+
+    font-size: 10px;
+    color: #eee;
+
+    text-shadow:
+        1px 1px #000,
+        -1px -1px rgba(0,0,0,.2);
+}
+
+/* =========================
+   SCROLLBAR
+========================= */
+
+::-webkit-scrollbar {
+    width: 15px;
+    height: 15px;
+}
+
+::-webkit-scrollbar-track {
+    background: #ece9d8;
+}
+
+::-webkit-scrollbar-thumb {
+    border: 2px solid #ece9d8;
+
+    background:
+        linear-gradient(
+            90deg,
+            #d9d9d9,
+            #a8a8a8,
+            #d9d9d9
+        );
+}
+
+::-webkit-scrollbar-button {
+    background: #d6d3c8;
+    border: 1px outset white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="window">
+
+    <!-- TITLE BAR -->
+    <div class="titlebar">
+
+        <div class="title-icon">🐐</div>
+
+        <div class="title-text">
+            RAUTA Luau Obfuscator
+        </div>
+
+        <div class="window-buttons">
+            <div class="window-button">_</div>
+            <div class="window-button">□</div>
+            <div class="window-button close">×</div>
+        </div>
+
+    </div>
+
+    <!-- MENU -->
+    <div class="menu">
+        <span>File</span>
+        <span>Edit</span>
+        <span>Tools</span>
+        <span>Help</span>
+    </div>
+
+    <!-- HERO -->
+    <div class="hero">
+
+        <div class="hero-top">
+
+<pre class="ascii">
+██████╗  █████╗ ██╗   ██╗████████╗ █████╗
+██╔══██╗██╔══██╗██║   ██║╚══██╔══╝██╔══██╗
+██████╔╝███████║██║   ██║   ██║   ███████║
+██╔══██╗██╔══██║██║   ██║   ██║   ██╔══██║
+██║  ██║██║  ██║╚██████╔╝   ██║   ██║  ██║
+╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝    ╚═╝   ╚═╝  ╚═╝
+</pre>
+
+            <div>
+                <h1>Luau<span> Obfuscator</span></h1>
+
+                <p>
+                    Client-side Luau obfuscation for Roblox Studio.
+                    Nothing is uploaded.
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="content">
+
+        <div class="workspace">
+
+            <!-- INPUT -->
+            <div class="group">
+
+                <div class="group-title">
+                    Input
+                </div>
+
+                <div class="editor">
+
+                    <div class="editor-head">
+                        <span>Luau / Roblox Studio source</span>
+                        <span class="counter" id="inLen">
+                            0 chars
+                        </span>
+                    </div>
+
+                    <textarea
+                        id="input"
+                        spellcheck="false"
+                        placeholder="-- paste your Luau script here
+
+local function greet(name)
+    print('Hello, ' .. name .. '!')
+end
+
+greet('World')"
+                    ></textarea>
+
+                </div>
+
+            </div>
+
+            <!-- OUTPUT -->
+            <div class="group">
+
+                <div class="group-title">
+                    Output
+                </div>
+
+                <div class="editor">
+
+                    <div class="editor-head">
+
+                        <span>
+                            Obfuscated Luau
+                        </span>
+
+                        <span>
+                            <button id="copyBtn">
+                                Copy
+                            </button>
+
+                            <button id="downloadBtn">
+                                Download
+                            </button>
+                        </span>
+
+                    </div>
+
+                    <pre
+                        class="output"
+                        id="output"
+                    >-- Output will appear here</pre>
+
+                    <div class="stats">
+
+                        <div class="stat">
+                            Before:
+                            <b id="sizeBefore">0</b> B
+                        </div>
+
+                        <div class="stat">
+                            After:
+                            <b id="sizeAfter">0</b> B
+                        </div>
+
+                        <div class="stat">
+                            Renamed:
+                            <b id="idCount">0</b>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- OPTIONS -->
+        <div class="group bottom">
+
+            <div class="group-title">
+                Obfuscation Options
+            </div>
+
+            <div class="editor">
+
+                <div class="options">
+
+                    <div class="option">
+                        <label>
+                            <input
+                                type="checkbox"
+                                id="optRename"
+                                checked
+                            >
+                            Rename locals/functions
+                        </label>
+                    </div>
+
+                    <div class="option">
+                        <label>
+                            <input
+                                type="checkbox"
+                                id="optStrings"
+                                checked
+                            >
+                            Encode strings
+                        </label>
+                    </div>
+
+                    <div class="option">
+                        <label>
+                            <input
+                                type="checkbox"
+                                id="optNumbers"
+                                checked
+                            >
+                            Obfuscate numeric literals
+                        </label>
+                    </div>
+
+                    <div class="option">
+                        <label>
+                            <input
+                                type="checkbox"
+                                id="optComments"
+                                checked
+                            >
+                            Strip comments
+                        </label>
+                    </div>
+
+                    <div class="option">
+                        <label>
+                            <input
+                                type="checkbox"
+                                id="optWhitespace"
+                                checked
+                            >
+                            Minify whitespace
+                        </label>
+                    </div>
+
+                    <div class="option">
+                        <label>
+                            <input
+                                type="checkbox"
+                                id="optJunk"
+                            >
+                            Insert junk locals
+                        </label>
+                    </div>
+
+                    <div class="option">
+
+                        Naming style:
+
+                        <select id="nameStyle">
+
+                            <option value="hex">
+                                Hex (_0x4F2A)
+                            </option>
+
+                            <option value="il1">
+                                Confusable (Il1lI)
+                            </option>
+
+                            <option value="short">
+                                Short (_a, _b, _c...)
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+                <div class="buttons">
+
+                    <button id="clearBtn">
+                        Clear
+                    </button>
+
+                    <button
+                        class="primary"
+                        id="runBtn"
+                    >
+                        Obfuscate ▶
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- WARNING -->
+        <div class="warning bottom">
+
+            ⚠ <b>Note:</b>
+            This tool runs entirely in your browser.
+            Always test generated Luau in Roblox Studio before using it
+            in a real project.
+
+        </div>
+
+        <!-- STATUS -->
+        <div class="statusbar">
+
+            <div class="status-left">
+
+                <span>
+                    RAUTA Luau Tools
+                </span>
+
+                <span class="status-online">
+                    ● Ready
+                </span>
+
+            </div>
+
+            <span>
+                Client-side
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- NO TASKBAR -->
+
+<div class="credit">
+    provided by @rautatientorii
+</div>
+
+
+<script>
+/* ============================================================
+   ORIGINAL OBFUSCATOR LOGIC
+============================================================ */
+
+const $ = id => document.getElementById(id);
+
+const input = $("input");
+const output = $("output");
+
+input.addEventListener("input", () => {
+    $("inLen").textContent =
+        input.value.length + " chars";
+});
+
+
+/* =========================
+   NAMING
+========================= */
+
+function makeNamer(style) {
+
+    let n = 0;
+
+    const usedShort =
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    return function next() {
+
+        n++;
+
+        if (style === "hex") {
+
+            const hex =
+                (
+                    Math.floor(Math.random() * 0xFFFFFF) ^
+                    (n * 2654435761)
+                ) >>> 0;
+
+            return "_0x" +
+                hex
+                    .toString(16)
+                    .toUpperCase()
+                    .padStart(5, "0")
+                    .slice(0, 6);
+        }
+
+        if (style === "il1") {
+
+            const chars = ["I", "l", "1"];
+
+            let s = "_";
+            let x = n;
+
+            const len =
+                5 + (n % 4);
+
+            for (
+                let i = 0;
+                i < len;
+                i++
+            ) {
+
+                s += chars[
+                    (x + i * 7) % 3
+                ];
+
+                x =
+                    (x * 13 + 7) % 97;
+            }
+
+            return s;
+        }
+
+        let idx = n - 1;
+        let s = "";
+
+        do {
+
+            s =
+                usedShort[idx % 52] +
+                s;
+
+            idx =
+                Math.floor(idx / 52) - 1;
+
+        } while (idx >= 0);
+
+        return "_" + s;
+    };
+}
+
+
+/* =========================
+   RESERVED
+========================= */
+
+const RESERVED = new Set([
+
+    "and","break","do","else","elseif","end",
+    "false","for","function","goto","if","in",
+    "local","nil","not","or","repeat","return",
+    "then","true","until","while",
+
+    "self","game","workspace","script",
+
+    "Instance",
+    "Vector3",
+    "Vector2",
+    "CFrame",
+    "Color3",
+    "UDim2",
+    "UDim",
+
+    "print",
+    "warn",
+    "error",
+
+    "pairs",
+    "ipairs",
+    "next",
+
+    "type",
+    "typeof",
+
+    "tostring",
+    "tonumber",
+
+    "pcall",
+    "xpcall",
+
+    "select",
+    "unpack",
+
+    "table",
+    "string",
+    "math",
+    "os",
+    "coroutine",
+
+    "wait",
+    "task",
+    "spawn",
+    "delay",
+    "require",
+
+    "loadstring",
+
+    "setmetatable",
+    "getmetatable",
+
+    "rawget",
+    "rawset",
+
+    "rawequal",
+    "assert",
+
+    "Enum",
+    "BrickColor",
+    "Ray",
+    "Region3",
+
+    "TweenInfo",
+    "NumberSequence",
+    "ColorSequence",
+    "NumberRange",
+
+    "_G",
+    "shared",
+
+    "__index",
+    "__newindex",
+    "__call",
+    "__tostring",
+    "__eq",
+    "__add",
+    "__sub",
+    "__mul",
+    "__div"
+]);
+
+
+/* =========================
+   TOKENIZER
+========================= */
+
+function tokenize(src) {
+
+    const tokens = [];
+
+    let i = 0;
+    const n = src.length;
+
+    while (i < n) {
+
+        const c = src[i];
+
+        /* comments */
+
+        if (
+            c === "-" &&
+            src[i + 1] === "-"
+        ) {
+
+            const start = i;
+
+            i += 2;
+
+            if (src[i] === "[") {
+
+                let eqs = 0;
+                let j = i + 1;
+
+                while (
+                    src[j] === "="
+                ) {
+                    eqs++;
+                    j++;
+                }
+
+                if (src[j] === "[") {
+
+                    const closeSeq =
+                        "]" +
+                        "=".repeat(eqs) +
+                        "]";
+
+                    const closeIdx =
+                        src.indexOf(
+                            closeSeq,
+                            j + 1
+                        );
+
+                    const end =
+                        closeIdx === -1
+                            ? n
+                            : closeIdx +
+                              closeSeq.length;
+
+                    tokens.push({
+                        type: "comment",
+                        value:
+                            src.slice(
+                                start,
+                                end
+                            )
+                    });
+
+                    i = end;
+
+                    continue;
+                }
+            }
+
+            let end =
+                src.indexOf(
+                    "\n",
+                    i
+                );
+
+            if (end === -1)
+                end = n;
+
+            tokens.push({
+                type: "comment",
+                value:
+                    src.slice(
+                        start,
+                        end
+                    )
+            });
+
+            i = end;
+
+            continue;
+        }
+
+
+        /* long strings */
+
+        if (
+            c === "[" &&
+            (
+                src[i + 1] === "[" ||
+                src[i + 1] === "="
+            )
+        ) {
+
+            let j = i + 1;
+            let eqs = 0;
+
+            while (
+                src[j] === "="
+            ) {
+                eqs++;
+                j++;
+            }
+
+            if (src[j] === "[") {
+
+                const start = i;
+
+                const closeSeq =
+                    "]" +
+                    "=".repeat(eqs) +
+                    "]";
+
+                const closeIdx =
+                    src.indexOf(
+                        closeSeq,
+                        j + 1
+                    );
+
+                const end =
+                    closeIdx === -1
+                        ? n
+                        : closeIdx +
+                          closeSeq.length;
+
+                tokens.push({
+                    type: "longstring",
+                    value:
+                        src.slice(
+                            start,
+                            end
+                        )
+                });
+
+                i = end;
+
+                continue;
+            }
+        }
+
+
+        /* quoted strings */
+
+        if (
+            c === '"' ||
+            c === "'"
+        ) {
+
+            const quote = c;
+
+            let j = i + 1;
+            let buf = c;
+
+            while (j < n) {
+
+                if (
+                    src[j] === "\\"
+                ) {
+
+                    buf +=
+                        src[j] +
+                        (src[j + 1] || "");
+
+                    j += 2;
+
+                    continue;
+                }
+
+                if (
+                    src[j] === quote
+                ) {
+
+                    buf += src[j];
+
+                    j++;
+
+                    break;
+                }
+
+                buf += src[j];
+
+                j++;
+            }
+
+            tokens.push({
+                type: "string",
+                value: buf
+            });
+
+            i = j;
+
+            continue;
+        }
+
+
+        /* identifiers */
+
+        if (
+            /[A-Za-z_]/.test(c)
+        ) {
+
+            let j = i + 1;
+
+            while (
+                j < n &&
+                /[A-Za-z0-9_]/.test(
+                    src[j]
+                )
+            ) {
+                j++;
+            }
+
+            tokens.push({
+                type: "ident",
+                value:
+                    src.slice(
+                        i,
+                        j
+                    )
+            });
+
+            i = j;
+
+            continue;
+        }
+
+
+        /* numbers */
+
+        if (
+            /[0-9]/.test(c) ||
+            (
+                c === "." &&
+                /[0-9]/.test(
+                    src[i + 1] || ""
+                )
+            )
+        ) {
+
+            let j = i;
+
+            if (
+                src[j] === "0" &&
+                (
+                    src[j + 1] === "x" ||
+                    src[j + 1] === "X"
+                )
+            ) {
+
+                j += 2;
+
+                while (
+                    j < n &&
+                    /[0-9a-fA-F]/.test(
+                        src[j]
+                    )
+                ) {
+                    j++;
+                }
+
+            } else {
+
+                while (
+                    j < n &&
+                    /[0-9]/.test(
+                        src[j]
+                    )
+                ) {
+                    j++;
+                }
+
+                if (
+                    src[j] === "."
+                ) {
+
+                    j++;
+
+                    while (
+                        j < n &&
+                        /[0-9]/.test(
+                            src[j]
+                        )
+                    ) {
+                        j++;
+                    }
+                }
+
+                if (
+                    src[j] === "e" ||
+                    src[j] === "E"
+                ) {
+
+                    j++;
+
+                    if (
+                        src[j] === "+" ||
+                        src[j] === "-"
+                    ) {
+                        j++;
+                    }
+
+                    while (
+                        j < n &&
+                        /[0-9]/.test(
+                            src[j]
+                        )
+                    ) {
+                        j++;
+                    }
+                }
+            }
+
+            tokens.push({
+                type: "number",
+                value:
+                    src.slice(
+                        i,
+                        j
+                    )
+            });
+
+            i = j;
+
+            continue;
+        }
+
+
+        /* whitespace */
+
+        if (
+            /\s/.test(c)
+        ) {
+
+            let j = i;
+
+            while (
+                j < n &&
+                /\s/.test(
+                    src[j]
+                )
+            ) {
+                j++;
+            }
+
+            tokens.push({
+                type: "ws",
+                value:
+                    src.slice(
+                        i,
+                        j
+                    )
+            });
+
+            i = j;
+
+            continue;
+        }
+
+
+        /* everything else */
+
+        tokens.push({
+            type: "other",
+            value: c
+        });
+
+        i++;
+    }
+
+    return tokens;
+}
+
+
+/* =========================
+   STRING ENCODING
+========================= */
+
+function stringToByteArray(
+    strLiteral
+) {
+
+    let inner =
+        strLiteral.slice(
+            1,
+            -1
+        );
+
+    const bytes = [];
+
+    for (
+        let k = 0;
+        k < inner.length;
+        k++
+    ) {
+
+        if (
+            inner[k] === "\\"
+        ) {
+
+            const nc =
+                inner[k + 1];
+
+            const map = {
+                n: 10,
+                t: 9,
+                r: 13,
+                a: 7,
+                b: 8,
+                f: 12,
+                v: 11,
+                "\\": 92,
+                '"': 34,
+                "'": 39,
+                "0": 0
+            };
+
+            if (
+                map[nc] !== undefined
+            ) {
+
+                bytes.push(
+                    map[nc]
+                );
+
+                k++;
+
+                continue;
+            }
+
+            bytes.push(
+                inner.charCodeAt(
+                    k + 1
+                )
+            );
+
+            k++;
+
+            continue;
+        }
+
+        bytes.push(
+            inner.charCodeAt(k)
+        );
+    }
+
+    return bytes;
+}
+
+
+function encodeStringLiteral(
+    strLiteral
+) {
+
+    const bytes =
+        stringToByteArray(
+            strLiteral
+        );
+
+    const key =
+        1 +
+        Math.floor(
+            Math.random() * 200
+        );
+
+    const encoded =
+        bytes.map(
+            b => (b ^ key) & 0xFF
+        );
+
+    const chunks =
+        encoded.map(
+            b => b.toString()
+        );
+
+    return `(function()local _b={${chunks.join(",")}}local _s=""for _i=1,#_b do _s=_s..string.char((_b[_i]~${key})%256)end return _s end)()`;
+}
+
+
+/* =========================
+   NUMBER OBFUSCATION
+========================= */
+
+function encodeNumber(numStr) {
+
+    if (
+        /^0[xX]/.test(numStr)
+    )
+        return numStr;
+
+    if (
+        numStr.includes(".") ||
+        numStr.includes("e") ||
+        numStr.includes("E")
+    )
+        return numStr;
+
+    const val =
+        parseInt(
+            numStr,
+            10
+        );
+
+    if (
+        isNaN(val) ||
+        val > 1e9
+    )
+        return numStr;
+
+    const a =
+        Math.floor(
+            Math.random() * 1000
+        ) + 1;
+
+    const op =
+        Math.random() > .5
+            ? "+"
+            : "-";
+
+    const b =
+        op === "+"
+            ? val - a
+            : val + a;
+
+    if (
+        b < 0 &&
+        op === "-"
+    )
+        return numStr;
+
+    return `(${a}${op}${b})`;
+}
+
+
+/* =========================
+   OBFUSCATOR
+========================= */
+
+function obfuscate(
+    src,
+    opts
+) {
+
+    let tokens =
+        tokenize(src);
+
+    if (
+        opts.stripComments
+    ) {
+
+        tokens =
+            tokens.filter(
+                t =>
+                    t.type !==
+                    "comment"
+            );
+    }
+
+
+    let renameMap =
+        new Map();
+
+    let idCount = 0;
+
+
+    if (
+        opts.rename
+    ) {
+
+        const namer =
+            makeNamer(
+                opts.style
+            );
+
+
+        for (
+            let idx = 0;
+            idx < tokens.length;
+            idx++
+        ) {
+
+            const t =
+                tokens[idx];
+
+            if (
+                t.type !==
+                "ident"
+            )
+                continue;
+
+            if (
+                RESERVED.has(
+                    t.value
+                )
+            )
+                continue;
+
+
+            let p = idx - 1;
+
+            while (
+                p >= 0 &&
+                tokens[p].type ===
+                "ws"
+            )
+                p--;
+
+            const prevOther =
+                p >= 0
+                    ? tokens[p]
+                    : null;
+
+            if (
+                prevOther &&
+                prevOther.type ===
+                "other" &&
+                (
+                    prevOther.value === "." ||
+                    prevOther.value === ":"
+                )
+            )
+                continue;
+
+
+            let nIdx =
+                idx + 1;
+
+            while (
+                nIdx < tokens.length &&
+                tokens[nIdx].type ===
+                "ws"
+            )
+                nIdx++;
+
+            const isLocalDecl =
+                (() => {
+
+                    let pp =
+                        idx - 1;
+
+                    while (
+                        pp >= 0 &&
+                        tokens[pp].type ===
+                        "ws"
+                    )
+                        pp--;
+
+                    return (
+                        pp >= 0 &&
+                        tokens[pp].type ===
+                        "ident" &&
+                        tokens[pp].value ===
+                        "local"
+                    );
+
+                })();
+
+
+            const isFunctionParamOrDecl =
+                (() => {
+
+                    let pp =
+                        idx - 1;
+
+                    while (
+                        pp >= 0 &&
+                        tokens[pp].type ===
+                        "ws"
+                    )
+                        pp--;
+
+                    if (
+                        pp >= 0 &&
+                        tokens[pp].type ===
+                        "ident" &&
+                        tokens[pp].value ===
+                        "function"
+                    )
+                        return true;
+
+                    return false;
+
+                })();
+
+
+            if (
+                !isLocalDecl &&
+                !isFunctionParamOrDecl &&
+                !renameMap.has(
+                    t.value
+                )
+            )
+                continue;
+
+
+            if (
+                !renameMap.has(
+                    t.value
+                )
+            ) {
+
+                renameMap.set(
+                    t.value,
+                    namer()
+                );
+
+                idCount++;
+            }
+        }
+
+
+        tokens =
+            tokens.map(
+                (t, idx) => {
+
+                    if (
+                        t.type !==
+                        "ident"
+                    )
+                        return t;
+
+                    if (
+                        !renameMap.has(
+                            t.value
+                        )
+                    )
+                        return t;
+
+                    let p =
+                        idx - 1;
+
+                    while (
+                        p >= 0 &&
+                        tokens[p].type ===
+                        "ws"
+                    )
+                        p--;
+
+                    const prevOther =
+                        p >= 0
+                            ? tokens[p]
+                            : null;
+
+                    if (
+                        prevOther &&
+                        prevOther.type ===
+                        "other" &&
+                        (
+                            prevOther.value === "." ||
+                            prevOther.value === ":"
+                        )
+                    )
+                        return t;
+
+                    return {
+                        type: "ident",
+                        value:
+                            renameMap.get(
+                                t.value
+                            )
+                    };
+                }
+            );
+    }
+
+
+    tokens =
+        tokens.map(t => {
+
+            if (
+                opts.encodeStrings &&
+                t.type === "string" &&
+                t.value.length >= 2
+            ) {
+
+                return {
+                    type: "raw",
+                    value:
+                        encodeStringLiteral(
+                            t.value
+                        )
+                };
+            }
+
+            if (
+                opts.encodeNumbers &&
+                t.type === "number"
+            ) {
+
+                return {
+                    type: "raw",
+                    value:
+                        encodeNumber(
+                            t.value
+                        )
+                };
+            }
+
+            return t;
+        });
+
+
+    let outSrc =
+        tokens
+            .map(t => t.value)
+            .join("");
+
+
+    if (
+        opts.minifyWs
+    ) {
+
+        outSrc =
+            outSrc
+                .split("\n")
+                .map(
+                    line =>
+                        line.trim()
+                )
+                .filter(
+                    line =>
+                        line.length > 0
+                )
+                .join("\n")
+                .replace(
+                    /[ \t]{2,}/g,
+                    " "
+                );
+    }
+
+
+    if (
+        opts.junk
+    ) {
+
+        const namer =
+            makeNamer(
+                opts.style
+            );
+
+        const lines =
+            outSrc.split("\n");
+
+        const junkLines = [];
+
+        const junkCount =
+            3 +
+            Math.floor(
+                Math.random() * 4
+            );
+
+        for (
+            let k = 0;
+            k < junkCount;
+            k++
+        ) {
+
+            const jn =
+                namer();
+
+            const val =
+                Math.floor(
+                    Math.random() *
+                    9999
+                );
+
+            junkLines.push(
+                `local ${jn}=${val}${Math.random() > .5 ? "*1" : "+0"};`
+            );
+        }
+
+        lines.splice(
+            0,
+            0,
+            ...junkLines.slice(
+                0,
+                Math.ceil(
+                    junkLines.length / 2
+                )
+            )
+        );
+
+        const rest =
+            junkLines.slice(
+                Math.ceil(
+                    junkLines.length / 2
+                )
+            );
+
+        rest.forEach(
+            jl => {
+
+                const pos =
+                    1 +
+                    Math.floor(
+                        Math.random() *
+                        lines.length
+                    );
+
+                lines.splice(
+                    pos,
+                    0,
+                    jl
+                );
+            }
+        );
+
+        outSrc =
+            lines.join("\n");
+    }
+
+
+    return {
+        code: outSrc,
+        idCount
+    };
+}
+
+
+/* =========================
+   RUN
+========================= */
+
+$("runBtn").addEventListener(
+    "click",
+    () => {
+
+        const src =
+            input.value;
+
+        if (
+            !src.trim()
+        ) {
+
+            output.textContent =
+                "-- Paste some Luau code first.";
+
+            return;
+        }
+
+
+        const opts = {
+
+            rename:
+                $("optRename").checked,
+
+            encodeStrings:
+                $("optStrings").checked,
+
+            encodeNumbers:
+                $("optNumbers").checked,
+
+            stripComments:
+                $("optComments").checked,
+
+            minifyWs:
+                $("optWhitespace").checked,
+
+            junk:
+                $("optJunk").checked,
+
+            style:
+                $("nameStyle").value
+        };
+
+
+        try {
+
+            const result =
+                obfuscate(
+                    src,
+                    opts
+                );
+
+            output.textContent =
+                result.code;
+
+            $("sizeBefore").textContent =
+                new Blob([src]).size;
+
+            $("sizeAfter").textContent =
+                new Blob([
+                    result.code
+                ]).size;
+
+            $("idCount").textContent =
+                result.idCount;
+
+        } catch (e) {
+
+            output.textContent =
+                "-- Error during obfuscation: " +
+                e.message;
+        }
+    }
+);
+
+
+/* =========================
+   COPY
+========================= */
+
+$("copyBtn").addEventListener(
+    "click",
+    async () => {
+
+        const text =
+            output.textContent;
+
+        try {
+
+            await navigator.clipboard.writeText(
+                text
+            );
+
+        } catch {
+
+            const temp =
+                document.createElement(
+                    "textarea"
+                );
+
+            temp.value = text;
+
+            document.body.appendChild(
+                temp
+            );
+
+            temp.select();
+
+            document.execCommand(
+                "copy"
+            );
+
+            temp.remove();
+        }
+
+        $("copyBtn").textContent =
+            "Copied!";
+
+        setTimeout(
+            () => {
+                $("copyBtn").textContent =
+                    "Copy";
+            },
+            1200
+        );
+    }
+);
+
+
+/* =========================
+   DOWNLOAD
+========================= */
+
+$("downloadBtn").addEventListener(
+    "click",
+    () => {
+
+        const blob =
+            new Blob(
+                [
+                    output.textContent
+                ],
+                {
+                    type:
+                        "text/plain;charset=utf-8"
+                }
+            );
+
+        const url =
+            URL.createObjectURL(
+                blob
+            );
+
+        const a =
+            document.createElement(
+                "a"
+            );
+
+        a.href = url;
+
+        a.download =
+            "obfuscated.lua";
+
+        document.body.appendChild(a);
+
+        a.click();
+
+        a.remove();
+
+        URL.revokeObjectURL(url);
+    }
+);
+
+
+/* =========================
+   CLEAR
+========================= */
+
+$("clearBtn").addEventListener(
+    "click",
+    () => {
+
+        input.value = "";
+
+        output.textContent =
+            "-- Output will appear here";
+
+        $("inLen").textContent =
+            "0 chars";
+
+        $("sizeBefore").textContent =
+            "0";
+
+        $("sizeAfter").textContent =
+            "0";
+
+        $("idCount").textContent =
+            "0";
+    }
+);
+</script>
+
+</body>
+</html>
